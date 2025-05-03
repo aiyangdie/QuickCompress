@@ -71,3 +71,11 @@ main {
     /* 移除可能存在的边框 */
     border: none; 
 }
+
+/* 定义分隔线样式 */
+.separator {
+    width: 80%;
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 2rem auto;
+}
