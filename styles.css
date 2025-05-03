@@ -1,0 +1,73 @@
+/* 设置页面整体字体和背景渐变色 */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* 设置页面头部样式，添加渐变背景和阴影 */
+header {
+    background: linear-gradient(90deg, #4b6cb7 0%, #182848 100%);
+    color: white;
+    padding: 1.5rem 0;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 设置页面主要内容区域的内边距 */
+main {
+    padding: 2rem;
+}
+
+/* 设置小程序列表样式，使用弹性布局 */
+.app-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+/* 设置单个小程序项样式，添加过渡效果 */
+.app-item {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    width: 320px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* 鼠标悬停时单个小程序项的样式变化 */
+.app-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+/* 设置小程序图标样式，添加圆角和阴影 */
+.app-icon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 设置小程序名称的字体样式 */
+.app-item h2 {
+    color: #333;
+    font-size: 1.3rem;
+    margin: 0;
+    margin-bottom: 1rem;
+}
+
+/* 设置小程序二维码样式，移除边框 */
+.app-qrcode {
+    width: 180px;
+    height: 180px;
+    margin-top: 1rem;
+    /* 移除可能存在的边框 */
+    border: none; 
+}
