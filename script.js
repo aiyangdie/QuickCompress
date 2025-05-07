@@ -18,152 +18,6 @@ const options = {
     preserveExif: true
 };
 
-// 添加历史记录数组
-let compressionHistory = [];
-
-// 添加设置面板HTML
-const settingsPanel = document.createElement('div');
-settingsPanel.className = 'settings-panel';
-settingsPanel.innerHTML = `
-    <div class="settings-header">
-        <h3><i class="fas fa-cog"></i> 压缩设置</h3>
-        <button class="close-settings"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="settings-content">
-        <div class="setting-item">
-            <label>最大文件大小 (MB)</label>
-            <input type="number" id="maxSizeInput" value="1" min="0.1" max="10" step="0.1">
-        </div>
-        <div class="setting-item">
-            <label>最大宽度/高度 (像素)</label>
-            <input type="number" id="maxDimensionInput" value="1920" min="100" max="4000" step="100">
-        </div>
-        <div class="setting-item">
-            <label>
-                <input type="checkbox" id="preserveExifInput" checked>
-                保留EXIF信息
-            </label>
-        </div>
-        <div class="setting-item">
-            <label>
-                <input type="checkbox" id="darkModeInput">
-                暗黑模式
-            </label>
-        </div>
-    </div>
-`;
-
-// 添加历史记录面板HTML
-const historyPanel = document.createElement('div');
-historyPanel.className = 'history-panel';
-historyPanel.innerHTML = `
-    <div class="history-header">
-        <h3><i class="fas fa-history"></i> 压缩历史</h3>
-        <button class="clear-history"><i class="fas fa-trash"></i></button>
-    </div>
-    <div class="history-content" id="historyContent">
-    </div>
-`;
-
-// 添加设置按钮
-const settingsBtn = document.createElement('button');
-settingsBtn.className = 'settings-btn';
-settingsBtn.innerHTML = '<i class="fas fa-cog"></i>';
-document.querySelector('.container').appendChild(settingsBtn);
-
-// 添加历史按钮
-const historyBtn = document.createElement('button');
-historyBtn.className = 'history-btn';
-historyBtn.innerHTML = '<i class="fas fa-history"></i>';
-document.querySelector('.container').appendChild(historyBtn);
-
-// 添加设置面板到页面
-document.querySelector('.container').appendChild(settingsPanel);
-document.querySelector('.container').appendChild(historyPanel);
-
-// 设置面板事件监听
-document.querySelector('.close-settings').addEventListener('click', () => {
-    settingsPanel.classList.remove('active');
-});
-
-settingsBtn.addEventListener('click', () => {
-    settingsPanel.classList.toggle('active');
-});
-
-historyBtn.addEventListener('click', () => {
-    historyPanel.classList.toggle('active');
-});
-
-// 更新压缩选项
-function updateCompressionOptions() {
-    options.maxSizeMB = parseFloat(document.getElementById('maxSizeInput').value);
-    options.maxWidthOrHeight = parseInt(document.getElementById('maxDimensionInput').value);
-    options.preserveExif = document.getElementById('preserveExifInput').checked;
-}
-
-// 暗黑模式切换
-document.getElementById('darkModeInput').addEventListener('change', (e) => {
-    options.darkMode = e.target.checked;
-    document.body.classList.toggle('dark-mode', options.darkMode);
-    localStorage.setItem('darkMode', options.darkMode);
-});
-
-// 保存历史记录
-function saveToHistory(file, compressedFile) {
-    const historyItem = {
-        originalName: file.name,
-        originalSize: file.size,
-        compressedSize: compressedFile.size,
-        timestamp: new Date().toISOString(),
-        savedPercentage: (100 - (compressedFile.size / file.size) * 100).toFixed(1)
-    };
-    
-    compressionHistory.unshift(historyItem);
-    if (compressionHistory.length > 50) compressionHistory.pop();
-    
-    updateHistoryPanel();
-    localStorage.setItem('compressionHistory', JSON.stringify(compressionHistory));
-}
-
-// 更新历史记录面板
-function updateHistoryPanel() {
-    const historyContent = document.getElementById('historyContent');
-    historyContent.innerHTML = compressionHistory.map(item => `
-        <div class="history-item">
-            <div class="history-file-name">${item.originalName}</div>
-            <div class="history-details">
-                <span>原始: ${(item.originalSize / 1024 / 1024).toFixed(2)}MB</span>
-                <span>压缩后: ${(item.compressedSize / 1024 / 1024).toFixed(2)}MB</span>
-                <span>节省: ${item.savedPercentage}%</span>
-            </div>
-            <div class="history-time">${new Date(item.timestamp).toLocaleString()}</div>
-        </div>
-    `).join('');
-}
-
-// 清除历史记录
-document.querySelector('.clear-history').addEventListener('click', () => {
-    compressionHistory = [];
-    updateHistoryPanel();
-    localStorage.removeItem('compressionHistory');
-});
-
-// 加载保存的设置和历史记录
-function loadSavedData() {
-    const savedDarkMode = localStorage.getItem('darkMode');
-    if (savedDarkMode) {
-        options.darkMode = savedDarkMode === 'true';
-        document.getElementById('darkModeInput').checked = options.darkMode;
-        document.body.classList.toggle('dark-mode', options.darkMode);
-    }
-    
-    const savedHistory = localStorage.getItem('compressionHistory');
-    if (savedHistory) {
-        compressionHistory = JSON.parse(savedHistory);
-        updateHistoryPanel();
-    }
-}
-
 // 拖拽上传
 dropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
@@ -208,11 +62,9 @@ async function handleFiles(files) {
         results.insertBefore(resultItem, results.firstChild);
 
         try {
-            updateCompressionOptions(); // 更新压缩选项
             const compressedFile = await compressImage(file, resultItem);
             compressedFiles.push(compressedFile);
             updateResultItem(resultItem, file, compressedFile, true);
-            saveToHistory(file, compressedFile); // 保存到历史记录
             
             processedCount++;
             currentFileSpan.textContent = processedCount;
@@ -336,7 +188,4 @@ downloadAllBtn.addEventListener('click', async () => {
         console.error('创建zip文件失败:', error);
         alert('下载失败，请重试或单独下载文件');
     }
-});
-
-// 初始化
-loadSavedData(); 
+}); 
