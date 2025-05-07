@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IC智能图片压缩</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/browser-image-compression/2.0.0/browser-image-compression.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-compress-alt"></i> IC智能图片压缩</h1>
+            <p>高质量图片压缩，保持原始文件名</p>
+        </header>
+
+        <div class="upload-container">
+            <div class="upload-area" id="dropZone">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>拖拽文件到这里 或 点击上传</p>
+                <input type="file" id="fileInput" accept="image/*" multiple hidden>
+            </div>
+            <div class="progress-status" id="progressStatus" style="display: none">
+                <div class="progress-text">正在处理：<span id="currentFile">0</span> / <span id="totalFiles">0</span></div>
+                <div class="total-progress">
+                    <div class="progress-bar" id="totalProgressBar"></div>
+                </div>
+            </div>
+            <button id="downloadAll" class="download-all-btn" style="display: none">
+                <i class="fas fa-download"></i> 一键下载所有压缩图片
+            </button>
+        </div>
+
+        <div class="results" id="results">
+            <!-- 结果将在这里动态显示 -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 
