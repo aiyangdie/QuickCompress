@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/covers/30-QuickCompress.jpg" alt="QuickCompress 项目封面" width="100%"></p>
+
 <p align="center">
   <img src="https://img.shields.io/badge/Type-Web_App-3498db?style=for-the-badge&logo=html5" alt="Type">
   <img src="https://img.shields.io/badge/Zero_Server-✓-2ecc71?style=for-the-badge" alt="Serverless">
